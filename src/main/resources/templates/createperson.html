@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>List of people</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    </head>
+    <body>
+        <nav class="navbar navbar-expand navbar-light bg-light">
+            <a class="navbar-brand col-sm-3" th:href="@{/people}">Home</a>
+        </nav>
+
+
+
+        <div class="container">
+
+            <div class="row mt-3">
+                <div class="col-6 offset-3">
+                    <p class="text-danger" th:if="${invalidEmailExceptionMessage}" th:text="${invalidEmailExceptionMessage}"></p>
+                    <p class="text-danger" th:if="${invalidEmailTypeExceptionMessage}" th:text="${invalidEmailTypeExceptionMessage}"></p>
+                    <p class="text-danger" th:if="${invalidAddressTypeExceptionMessage}" th:text="${invalidAddressTypeExceptionMessage}"></p>
+                    <p class="text-danger" th:if="${invalidAddressInfoExceptionMessage}" th:text="${invalidAddressInfoExceptionMessage}"></p>
+                    <p class="text-danger" th:if="${invalidPersonPINExceptionMessage}" th:text="${invalidPersonPINExceptionMessage}"></p>
+                    <p class="text-danger" th:if="${missingInputParamsExceptionMessage}" th:text="${missingInputParamsExceptionMessage}"></p>
+                    <p class="text-danger" th:if="${invalidNameExceptionMessage}" th:text="${invalidNameExceptionMessage}"></p>
+                </div>
+            </div>
+
+
+            <div class="row mt-3">
+                <div class="col-6 offset-3">
+                    <div class="text-danger" th:if="${error}" th:text="${error}"/>
+                    <h2>Register Page</h2>
+                    <!--/* <form th:action="@{/people/new}" th:object="${person}" method="post"> */-->
+                    <form th:action="@{${formURL}}" th:object="${person}" method="post">
+                        <div class="form-group">
+                            <label>Full name: </label>
+                            <input type="text" class="form-control" id="name" name="name" th:field="*{fullName}"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Email type: </label>
+                            <input type="text" class="form-control" id="emailType" name="emailType" th:field="*{email.emailType}"/>
+                        </div>
+                        <div class="form-group">
+                            <label>Email: </label>
+                            <input type="text" class="form-control" id="email" name="email" th:field="*{email.email}"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Address type: </label>
+                            <input type="text" class="form-control"  id="addressType" name="addressType" th:field="*{address.addressType}"/>
+                        </div>
+                        <div class="form-group">
+                            <label>Address: </label>
+                            <input type="text" class="form-control" id="addressInfo" name="addressInfo" th:field="*{address.addressInfo}"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label>PIN: </label>
+                            <input type="text" class="form-control" id="pin" name="pin" th:field="*{pin}"/>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

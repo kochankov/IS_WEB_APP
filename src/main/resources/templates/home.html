@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>List of people</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<style>
+.container { position: relative; }
+
+.child {
+  width: 400px;
+  height: 200px;
+  background-color: red;
+  /* Center vertically and horizontally */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -25px 0 0 -25px;
+}
+
+.child form {
+position: absolute;
+  top: 50%;
+  left: 30%;
+}
+</style>
+
+<body>
+
+<nav class="navbar navbar-expand navbar-light bg-light">
+    <div class="col-sm-8">
+        <a class="navbar-brand" th:href="@{/people}">Home</a>
+        <a th:href="@{/people/new}">Create person</a>
+    </div>
+</nav>
+
+
+<div class="container">
+
+    <div class="row mt-3">
+        <div class="col-6 offset-3">
+        <p class="text-danger" th:if="${createPersonExceptionMessage}" th:text="${createPersonExceptionMessage}"></p>
+        <p class="text-success" th:if="${createdPersonMessage}" th:text="${createdPersonMessage}"></p>
+
+        <p class="text-danger" th:if="${deletePersonExceptionMessage}" th:text="${deletePersonExceptionMessage}"></p>
+        <p class="text-success" th:if="${deletedPersonMessage}" th:text="${deletedPersonMessage}"></p>
+
+        <p class="text-danger" th:if="${editPersonExceptionMessage}" th:text="${editPersonExceptionMessage}"></p>
+        <p class="text-success" th:if="${updatedPersonMessage}" th:text="${updatedPersonMessage}"></p>
+    </div>
+    </div>
+
+    <div class="row"><div class="col-md-5 mt-6"><p></p></div></div>
+    <div class="row">
+    <div class="form-group col-md-5">
+        <form th:action="@{/people}" method="get">
+            <label>Find by name: </label>
+            <input type="text" id="name" name="name"/>
+            <input type="submit" value="Filter">
+        </form>
+    </div>
+        <div class="form-group col-md-5">
+        <form th:action="@{/people}" method="get">
+            <input type="submit" value="Clear">
+        </form>
+        </div>
+    </div>
+
+
+    <div th:if="${isDeleteQuestionActivated}" class="child" id="modalform">
+        <form th:action="@{/people/{id}/delete(id=${id})}" method="post">
+            <p>Are you sure to delete entry?</p>
+            <input type="submit" value="Delete" />
+            <input type="button" name="Cancel" value="Cancel" onclick="remove(this)" />
+        </form>
+    </div>
+
+
+        <table class="table">
+            <tr th:each="person, iStat : ${people}">
+                <td th:text="${person.id}"></td>
+                <td th:text="${person.fullName}"></td>
+
+
+                <td th:if="${person.email}" th:text="${person.email.email}"></td>
+                <td th:unless="${person.email}">N/A</td>
+                <td th:if="${person.email}" th:text="${person.email.emailType}"></td>
+                <td th:unless="${person.email}">N/A</td>
+                <td th:if="${person.address}" th:text="${person.address.addressType}"></td>
+                <td th:unless="${person.address}">N/A</td>
+                <td th:if="${person.address}" th:text="${person.address.addressInfo}"></td>
+                <td th:unless="${person.address}">N/A</td>
+
+
+                <td th:if="${person.pin}" th:text="${person.pin}"></td>
+                <td th:unless="${person.pin}">N/A</td>
+                <td><a th:href="@{people/{id}/edit(id=${person.id})}">Edit</a></td>
+                <td><a th:href="@{people/{id}/delete(id=${person.id})}">Delete</a></td>
+            </tr>
+        </table>
+
+    </div>
+
+<script>
+function remove() {
+  var element = document.getElementById("modalform");
+  element.remove();
+  location.assign("http://localhost:8080/people");
+}
+</script>
+    </body>
+    </html>
